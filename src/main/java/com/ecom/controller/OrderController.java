@@ -6,6 +6,7 @@ import com.ecom.payload.OrderDto;
 import com.ecom.service.OrderService;
 import com.ecom.service.UserService;
 import com.razorpay.RazorpayException;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    @Operation(summary = "Create an order")
     @PostMapping("/create")
     public ResponseEntity<OrderDto> createOrder(@RequestParam double amount, @RequestParam String currency, @RequestParam String receipt) {
 
@@ -38,6 +40,7 @@ public class OrderController {
         }
     }
 
+    @Operation(summary = "Update payement status")
     @PostMapping("/update-status")
     public ResponseEntity<Order> updateOrderStatus(@RequestParam String razorpayOrderId, @RequestParam String status) {
         Order order = orderService.updateOrderStatus(razorpayOrderId, status);

@@ -21,4 +21,7 @@ public class CartItems {
 
     @Column
     private int quantity;
+
+    @Column
+    private double price;
 }

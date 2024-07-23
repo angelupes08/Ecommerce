@@ -8,4 +8,12 @@ public class CartDto {
     private ProductDto productDto;
 
     private int quantity;
+
+    private double price;
+
+    public double getPrice() {
+        return this.price*this.quantity;
+    }
+
+
 }

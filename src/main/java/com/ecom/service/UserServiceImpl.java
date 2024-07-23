@@ -1,7 +1,9 @@
 package com.ecom.service;
 
+import com.ecom.dao.CartRepo;
 import com.ecom.dao.UserRepo;
 import com.ecom.exception.ResourceNotFoundException;
+import com.ecom.model.Cart;
 import com.ecom.model.Users;
 import com.ecom.payload.UserDto;
 import org.modelmapper.ModelMapper;
@@ -28,6 +30,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    CartRepo cartRepo;
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -78,4 +83,5 @@ public class UserServiceImpl implements UserService{
 
         return userRepo.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found for the email"+email));
     }
+
 }

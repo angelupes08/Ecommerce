@@ -64,6 +64,7 @@ public class CartServiceImpl implements CartService{
         cartItems.setCart(cart);
         cartItems.setProducts(products);
         cartItems.setQuantity(quantity);
+        cartItems.setPrice(cartItems.getProducts().getPrice());
 
         return cartItemRepo.save(cartItems);
     }
@@ -94,6 +95,7 @@ public class CartServiceImpl implements CartService{
 
             cartDto.setProductDto(productDto);
             cartDto.setQuantity(c.getQuantity());
+            cartDto.setPrice(c.getPrice());
 
             cartDtos.add(cartDto);
         }
@@ -113,6 +115,12 @@ public class CartServiceImpl implements CartService{
 
         return cartItemRepo.findByCart(cart);
 
+    }
+
+    @Override
+    public double findCartPrice(Cart cart) {
+
+        return cartItemRepo.findTotalPriceByCartId(cart);
     }
 
 

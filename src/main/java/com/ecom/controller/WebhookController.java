@@ -4,6 +4,7 @@ import com.ecom.service.OrderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.razorpay.RazorpayException;
 import com.razorpay.Utils;
+import io.swagger.v3.oas.annotations.Operation;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,38 +20,27 @@ public class WebhookController {
     @Autowired
     private OrderService orderService;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    @Operation(summary = "Handles webhook through Razorpay")
+    public  ResponseEntity<Void> handleRazorpayWebhook(@RequestBody String payload) {
+        // Process the webhook payload to update the order status
+        // Example: Verify the signature, extract order ID and status, update the order status
 
-    @PostMapping("/razorpay")
-    public ResponseEntity<String> handleRazorpayWebhook(
-            @RequestHeader("X-Razorpay-Signature") String signature,
-            @RequestBody String payload) {
+        // Assuming you have a method to process the webhook payload
+        processWebhookPayload(payload);
 
-        // Verify webhook signature
-        try {
-            Utils.verifyWebhookSignature(payload, signature, "YOUR_SECRET");
-        } catch (RazorpayException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid signature");
-        }
+        return ResponseEntity.ok().build();
+    }
 
-        // Process the webhook payload
-        Map<String, Object> webhookData;
-        try {
-            webhookData = objectMapper.readValue(payload, Map.class);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid payload");
-        }
-        String event = (String) webhookData.get("event");
+    private void processWebhookPayload(String payload) {
+        // Parse and validate the payload
+        // Extract razorpay_order_id and payment status
+        // Update order status based on payment status
 
-        if ("payment.captured".equals(event)) {
-            // Update order status to 'Paid'
-            Map<String, Object> paymentDetails = (Map<String, Object>) webhookData.get("payload");
-            String orderId = (String) paymentDetails.get("order_id");
-            // Call your service to update the order status
-            orderService.updateOrderStatus(orderId, "Paid");
-        }
+        // Example code (not complete, needs signature verification and proper parsing):
+        JSONObject webhookPayload = new JSONObject(payload);
+        String razorpayOrderId = webhookPayload.getString("order_id");
+        String status = webhookPayload.getString("status");
 
-        return ResponseEntity.status(HttpStatus.OK).body("Webhook received");
+        orderService.updateOrderStatus(razorpayOrderId, status);
     }
 }

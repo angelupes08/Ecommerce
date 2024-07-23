@@ -3,6 +3,7 @@ package com.ecom.controller;
 import com.ecom.payload.CategoryDto;
 import com.ecom.payload.ProductDto;
 import com.ecom.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +21,14 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
+    @Operation(summary = "Get List of Products By Name")
     @GetMapping("")
     public ResponseEntity<List<ProductDto>> getProductByName(@RequestParam(value = "name") String productName){
 
         return new ResponseEntity<>(productService.findProducts(productName), HttpStatus.OK);
     }
 
+    @Operation(summary = "Get List of Products By Name in a Page")
     @GetMapping("/page")
     public ResponseEntity<List<ProductDto>> getProductByNamePage(
             @RequestParam(value = "name") String productName,
@@ -35,6 +38,7 @@ public class ProductController {
         return new ResponseEntity<>(productService.findProductsPage(productName,pageNo,pageSize), HttpStatus.OK);
     }
 
+    @Operation(summary = "Get List of Products By Category in a Page")
     @GetMapping("/category")
     public ResponseEntity<List<ProductDto>> getProductsByCategoryName(@RequestParam(value = "categoryName") String keyword,
                                                                       @RequestParam(value = "pageNo") int pageNo,

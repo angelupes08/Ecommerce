@@ -23,4 +23,6 @@ public interface CartService {
 
     public List<CartItems> getCartItemsFromCart(Cart cart);
 
+    public double findCartPrice(Cart cart);
+
 }

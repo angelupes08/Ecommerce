@@ -16,7 +16,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @Operation(summary = "Registers a user")
+    @Operation(summary = "Registers a user in the application")
     @PostMapping("/register")
     public ResponseEntity<UserDto> createUser(@RequestBody @Valid UserDto user) {
 
