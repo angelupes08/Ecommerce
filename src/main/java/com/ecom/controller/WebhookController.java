@@ -20,6 +20,7 @@ public class WebhookController {
     @Autowired
     private OrderService orderService;
 
+    @PostMapping("/razorpay")
     @Operation(summary = "Handles webhook through Razorpay")
     public  ResponseEntity<Void> handleRazorpayWebhook(@RequestBody String payload) {
         // Process the webhook payload to update the order status

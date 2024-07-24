@@ -5,6 +5,7 @@ import com.ecom.model.Products;
 import com.ecom.payload.ProductDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -23,6 +24,7 @@ public class ProductServiceImpl implements ProductService{
     ModelMapper modelMapper;
 
     @Override
+    @Cacheable(value="products",key = "#name")
     public List<ProductDto> findProducts(String name) {
 
         List<Products> productsList = productRepo.findByNameContaining(name);
@@ -31,6 +33,7 @@ public class ProductServiceImpl implements ProductService{
                 .stream().map((product)->this.modelMapper.map(product, ProductDto.class)).toList();
     }
 
+    @Cacheable(value="products",key="#name + '-' + #pageNumber + '-' + #pageSize")
     @Override
     public List<ProductDto> findProductsPage(String name,int pageNumber,int pageSize) {
 
@@ -39,10 +42,11 @@ public class ProductServiceImpl implements ProductService{
                 stream().map((product)->(this.modelMapper.map(product,ProductDto.class))).collect(Collectors.toList());
     }
 
+    @Cacheable(value="products",key = "#categoryName + '-' + #pageNumber + '-' + #pageSize")
     @Override
-    public List<ProductDto> findProductsByCategory(String name,int pageNumber,int pageSize) {
+    public List<ProductDto> findProductsByCategory(String categoryName,int pageNumber,int pageSize) {
 
-        Page<Products> productsList = productRepo.findByCategory_NameContaining(name,
+        Page<Products> productsList = productRepo.findByCategory_NameContaining(categoryName,
                 PageRequest.of(pageNumber,pageSize,Sort.Direction.DESC,"id"));
 
         return productsList

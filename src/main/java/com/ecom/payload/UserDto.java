@@ -6,10 +6,12 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
+
 @Data
 @Getter
 @Setter
-public class UserDto {
+public class UserDto implements Serializable {
 
     private String email;
 

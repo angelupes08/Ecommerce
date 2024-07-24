@@ -5,6 +5,7 @@ import com.ecom.payload.ProductDto;
 import com.ecom.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ public class ProductController {
 
     @Autowired
     ProductService productService;
+
 
     @Operation(summary = "Get List of Products By Name")
     @GetMapping("")

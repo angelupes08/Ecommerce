@@ -8,6 +8,8 @@ import com.ecom.service.UserService;
 import com.razorpay.RazorpayException;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +28,7 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+
     @Operation(summary = "Create an order")
     @PostMapping("/create")
     public ResponseEntity<OrderDto> createOrder(@RequestParam double amount, @RequestParam String currency, @RequestParam String receipt) {
@@ -40,7 +43,7 @@ public class OrderController {
         }
     }
 
-    @Operation(summary = "Update payement status")
+    @Operation(summary = "Update payment status")
     @PostMapping("/update-status")
     public ResponseEntity<Order> updateOrderStatus(@RequestParam String razorpayOrderId, @RequestParam String status) {
         Order order = orderService.updateOrderStatus(razorpayOrderId, status);

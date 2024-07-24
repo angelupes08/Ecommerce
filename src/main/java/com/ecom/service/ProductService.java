@@ -11,5 +11,5 @@ public interface ProductService {
 
     public List<ProductDto> findProductsPage(String name,int pageNumber,int pageSize);
 
-    public List<ProductDto> findProductsByCategory(String name,int pageNumber,int pageSize);
+    public List<ProductDto> findProductsByCategory(String categoryName,int pageNumber,int pageSize);
 }

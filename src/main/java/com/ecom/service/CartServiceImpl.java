@@ -12,10 +12,14 @@ import com.ecom.payload.CartDto;
 import com.ecom.payload.ProductDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -66,7 +70,9 @@ public class CartServiceImpl implements CartService{
         cartItems.setQuantity(quantity);
         cartItems.setPrice(cartItems.getProducts().getPrice());
 
-        return cartItemRepo.save(cartItems);
+        cartItems = cartItemRepo.save(cartItems);
+
+        return cartItems;
     }
 
     @Override
@@ -79,8 +85,6 @@ public class CartServiceImpl implements CartService{
         List<CartDto> cartDtos = new ArrayList<>();
 
         //return cartItemsList.stream().map((items)->this.modelMapper.map(items,CartDto.class)).collect(Collectors.toList());
-
-
 
         for(CartItems c:cartItemsList){
 
@@ -108,6 +112,7 @@ public class CartServiceImpl implements CartService{
 
         cart.setIsActive(0);
         cartRepo.save(cart);
+
     }
 
     @Override
@@ -122,6 +127,5 @@ public class CartServiceImpl implements CartService{
 
         return cartItemRepo.findTotalPriceByCartId(cart);
     }
-
 
 }
