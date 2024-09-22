@@ -128,4 +128,32 @@ public class CartServiceImpl implements CartService{
         return cartItemRepo.findTotalPriceByCartId(cart);
     }
 
+    @Override
+    public void reduceItemsQuantity(Users user, Long productId) {
+
+        Cart cart = findActiveCart(user);
+
+        List<CartItems> cartItemsList = cartItemRepo.findByCart(cart);
+
+        Products product = productRepo.findById(productId).orElseThrow(()-> new ResourceNotFoundException("No such product available innthe cart"));
+
+        CartItems cartItem = cartItemRepo.findByCartAndProducts(cart,product);
+
+        int quantity = cartItemRepo.findQuantityById(cartItem.getId());
+
+        if(quantity>0){
+
+            quantity--;
+
+            cartItem.setQuantity(quantity);
+
+            cartItemRepo.save(cartItem);
+        }
+
+        else {
+
+            throw new RuntimeException("Quantity is already set to 0");
+        }
+    }
+
 }

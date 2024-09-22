@@ -13,7 +13,7 @@ public interface ProductRepo extends JpaRepository<Products,Long> {
 
     public List<Products> findByNameContaining(String keyword);
 
-    public Page<Products> findByNameContaining(String keword, Pageable page);
+    public Page<Products> findByNameContaining(String keyword, Pageable page);
 
     public Page<Products> findByCategory_NameContaining(String keyword, Pageable page);
 

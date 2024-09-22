@@ -25,4 +25,6 @@ public interface CartService {
 
     public double findCartPrice(Cart cart);
 
+    public void reduceItemsQuantity(Users user,Long productId);
+
 }
