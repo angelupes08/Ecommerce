@@ -47,4 +47,10 @@ public class ProductController {
 
         return new ResponseEntity<>(productService.findProductsByCategory(keyword,pageNo,pageSize),HttpStatus.OK);
     }
+
+    @GetMapping("/default")
+    public String returnProduct(){
+
+        return "No product available";
+    }
 }
