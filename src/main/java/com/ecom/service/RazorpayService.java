@@ -3,6 +3,9 @@ package com.ecom.service;
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
+import jakarta.annotation.PostConstruct;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,7 +20,7 @@ public class RazorpayService {
 
     @Value("${razorpay.key_secret}")
     private String keySecret;
-
+    /*
     public RazorpayService() throws RazorpayException {
 
         if (keyId == null || keySecret == null) {
@@ -25,6 +28,16 @@ public class RazorpayService {
         }
 
         this.razorpayClient=new RazorpayClient(keyId,keySecret);
+    }
+
+     */
+
+    @PostConstruct
+    public void init() throws RazorpayException {
+        if (keyId == null || keySecret == null) {
+            throw new IllegalArgumentException("Razorpay API key and secret must not be null");
+        }
+        this.razorpayClient = new RazorpayClient(keyId, keySecret);
     }
 
     public Order createOrder(double amount, String currency, String receipt) throws RazorpayException {
