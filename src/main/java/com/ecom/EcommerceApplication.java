@@ -7,7 +7,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-@EnableCaching //used for redis caching
+@EnableCaching //used for redis db caching
 public class EcommerceApplication {
 
     public static void main(String[] args) {
